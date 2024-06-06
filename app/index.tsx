@@ -107,7 +107,7 @@ export default function HomeScreen() {
 						key={"%"}>
 						<FontAwesome6
 							name="percent"
-							size={24}
+							size={30}
 							color="#da6c35"
 						/>
 					</TouchableOpacity>
@@ -117,7 +117,7 @@ export default function HomeScreen() {
 						key={"/"}>
 						<FontAwesome6
 							name="divide"
-							size={24}
+							size={30}
 							color="#da6c35"
 						/>
 					</TouchableOpacity>
@@ -127,7 +127,7 @@ export default function HomeScreen() {
 						key={"<"}>
 						<Feather
 							name="delete"
-							size={24}
+							size={30}
 							color="#da6c35"
 						/>
 					</TouchableOpacity>
@@ -140,7 +140,7 @@ export default function HomeScreen() {
 						key={"*"}>
 						<AntDesign
 							name="close"
-							size={24}
+							size={30}
 							color="#da6c35"
 						/>
 					</TouchableOpacity>
@@ -153,7 +153,7 @@ export default function HomeScreen() {
 						key={"-"}>
 						<FontAwesome6
 							name="minus"
-							size={24}
+							size={30}
 							color="#da6c35"
 						/>
 					</TouchableOpacity>
@@ -166,7 +166,7 @@ export default function HomeScreen() {
 						key={"+"}>
 						<FontAwesome6
 							name="add"
-							size={24}
+							size={30}
 							color="#da6c35"
 						/>
 					</TouchableOpacity>
@@ -177,7 +177,11 @@ export default function HomeScreen() {
 						onPress={() => handlePress("=")}
 						style={styles.eqButton}
 						key={"="}>
-						<Text style={styles.buttonText}>{"="}</Text>
+						<FontAwesome6
+							name="equals"
+							size={30}
+							color="#FFF"
+						/>
 					</TouchableOpacity>
 				</View>
 			</View>

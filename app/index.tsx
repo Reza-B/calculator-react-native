@@ -14,6 +14,7 @@ type ButtonValue = string;
 export default function HomeScreen() {
 	const [display, setDisplay] = useState<string>("");
 	const [evaluated, setEvaluated] = useState<boolean>(false);
+	const [history, setHistory] = useState<string[]>([]);
 
 	const handlePress = (value: ButtonValue) => {
 		if (display === "Error" || display === "Divide by zero") {
@@ -27,19 +28,24 @@ export default function HomeScreen() {
 			if (value === "=") {
 				if (display.length > 0) {
 					try {
-						if (eval(display).toString() !== "Infinity") {
-							setDisplay(eval(display).toString());
+						const result = eval(display).toString();
+						if (result !== "Infinity") {
+							setHistory([...history, `${display} = ${result}`]);
 							setEvaluated(true);
+							setDisplay(result);
 						} else {
 							setDisplay("Divide by zero");
-							setEvaluated(false);
 						}
 					} catch {
 						setDisplay("Error");
 					}
 				}
 			} else if (value === "C") {
-				setDisplay("");
+				if (display.length > 0) {
+					setDisplay("");
+				} else {
+					setHistory([]);
+				}
 				setEvaluated(false);
 			} else if (value === "<") {
 				setDisplay(display.slice(0, -1));
@@ -47,19 +53,20 @@ export default function HomeScreen() {
 			} else if (value === "%") {
 				if (display.length > 0) {
 					setDisplay((eval(display) / 100).toString());
-					setEvaluated(false);
 				}
+				setEvaluated(false);
 			} else {
-				if (/^[1-9]$/.test(value)) {
-					if (evaluated) {
-						setDisplay(value);
+				if (evaluated) {
+					setDisplay(value);
+					setEvaluated(false);
+				} else {
+					if (/^[1-9]$/.test(value)) {
+						setDisplay(display + value);
 						setEvaluated(false);
 					} else {
-						setDisplay(display + value);
-					}
-				} else {
-					if (display.length > 0) {
-						setDisplay(display + value);
+						if (display.length > 0) {
+							setDisplay(display + value);
+						}
 					}
 				}
 			}
@@ -189,7 +196,6 @@ const styles = StyleSheet.create({
 	displayContainer: {
 		justifyContent: "center",
 		alignItems: "flex-end",
-		// backgroundColor: "#383838",
 		borderBottomWidth: 0.5,
 		borderBottomColor: "#707070",
 		borderRadius: 10,
@@ -242,4 +248,16 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		color: "#da6c35",
 	},
+	// historyContainer: {
+	// 	maxHeight: 100,
+	// 	overflow: "scroll",
+	// 	marginRight: 80,
+	// 	width: "100%",
+	// 	alignItems: "flex-end",
+	// },
+	// historyItem: {
+	// 	color: "#858585",
+	// 	fontSize: 20,
+	// 	marginBottom: 5,
+	// },
 });

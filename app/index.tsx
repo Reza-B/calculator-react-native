@@ -5,9 +5,9 @@ import {
 	View,
 	Text,
 	TouchableOpacity,
-	Image,
 	StatusBar,
 } from "react-native";
+import { Feather, FontAwesome6, AntDesign } from "@expo/vector-icons";
 
 type ButtonValue = string;
 
@@ -15,16 +15,30 @@ export default function HomeScreen() {
 	const [display, setDisplay] = useState<string>("");
 
 	const handlePress = (value: ButtonValue) => {
-		if (value === "=") {
-			try {
-				setDisplay(eval(display).toString());
-			} catch {
-				setDisplay("Error");
+		if (display === "Error" || display === "Divide by zero") {
+			if (/^[1-9]$/.test(value)) {
+				setDisplay(value);
+			} else {
+				setDisplay("");
 			}
-		} else if (value === "C") {
-			setDisplay("");
 		} else {
-			setDisplay(display + value);
+			if (value === "=") {
+				try {
+					if (eval(display).toString() !== "Infinity")
+						setDisplay(eval(display).toString());
+					else setDisplay("Divide by zero");
+				} catch {
+					setDisplay("Error");
+				}
+			} else if (value === "C") {
+				setDisplay("");
+			} else if (value === "<") {
+				setDisplay(display.slice(0, -1));
+			} else if (value === "%") {
+				setDisplay((eval(display) / 100).toString());
+			} else {
+				setDisplay(display + value);
+			}
 		}
 	};
 
@@ -44,7 +58,9 @@ export default function HomeScreen() {
 				backgroundColor={"#2f2f2f"}
 			/>
 			<View style={styles.displayContainer}>
-				<Text style={styles.displayText}>{display}</Text>
+				<Text style={styles.displayText}>
+					{display.length > 0 ? display : "0"}
+				</Text>
 			</View>
 			<View style={styles.numpad}>
 				<View style={styles.buttonRow}>
@@ -58,19 +74,31 @@ export default function HomeScreen() {
 						onPress={() => handlePress("%")}
 						style={styles.funcBTN}
 						key={"%"}>
-						<Text style={styles.funcBTNText}>{"%"}</Text>
+						<FontAwesome6
+							name="percent"
+							size={24}
+							color="#da6c35"
+						/>
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={() => handlePress("/")}
 						style={styles.funcBTN}
 						key={"/"}>
-						<Text style={styles.funcBTNText}>{"/"}</Text>
+						<FontAwesome6
+							name="divide"
+							size={24}
+							color="#da6c35"
+						/>
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={() => handlePress("<")}
 						style={styles.funcBTN}
 						key={"<"}>
-						<Text style={styles.funcBTNText}>{"<"}</Text>
+						<Feather
+							name="delete"
+							size={24}
+							color="#da6c35"
+						/>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.buttonRow}>
@@ -79,7 +107,11 @@ export default function HomeScreen() {
 						onPress={() => handlePress("*")}
 						style={styles.funcBTN}
 						key={"*"}>
-						<Text style={styles.funcBTNText}>{"X"}</Text>
+						<AntDesign
+							name="close"
+							size={24}
+							color="#da6c35"
+						/>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.buttonRow}>
@@ -88,7 +120,11 @@ export default function HomeScreen() {
 						onPress={() => handlePress("-")}
 						style={styles.funcBTN}
 						key={"-"}>
-						<Text style={styles.funcBTNText}>{"-"}</Text>
+						<FontAwesome6
+							name="minus"
+							size={24}
+							color="#da6c35"
+						/>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.buttonRow}>
@@ -97,7 +133,11 @@ export default function HomeScreen() {
 						onPress={() => handlePress("+")}
 						style={styles.funcBTN}
 						key={"+"}>
-						<Text style={styles.funcBTNText}>{"+"}</Text>
+						<FontAwesome6
+							name="add"
+							size={24}
+							color="#da6c35"
+						/>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.buttonRow}>

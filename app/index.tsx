@@ -13,6 +13,7 @@ type ButtonValue = string;
 
 export default function HomeScreen() {
 	const [display, setDisplay] = useState<string>("");
+	const [evaluated, setEvaluated] = useState<boolean>(false);
 
 	const handlePress = (value: ButtonValue) => {
 		if (display === "Error" || display === "Divide by zero") {
@@ -21,23 +22,40 @@ export default function HomeScreen() {
 			} else {
 				setDisplay("");
 			}
+			setEvaluated(false);
 		} else {
 			if (value === "=") {
 				try {
-					if (eval(display).toString() !== "Infinity")
+					if (eval(display).toString() !== "Infinity") {
 						setDisplay(eval(display).toString());
-					else setDisplay("Divide by zero");
+						setEvaluated(true);
+					} else {
+						setDisplay("Divide by zero");
+						setEvaluated(false);
+					}
 				} catch {
 					setDisplay("Error");
 				}
 			} else if (value === "C") {
 				setDisplay("");
+				setEvaluated(false);
 			} else if (value === "<") {
 				setDisplay(display.slice(0, -1));
+				setEvaluated(false);
 			} else if (value === "%") {
 				setDisplay((eval(display) / 100).toString());
+				setEvaluated(false);
 			} else {
-				setDisplay(display + value);
+				if (/^[1-9]$/.test(value)) {
+					if (evaluated) {
+						setDisplay(value);
+						setEvaluated(false);
+					} else {
+						setDisplay(display + value);
+					}
+				} else {
+					setDisplay(display + value);
+				}
 			}
 		}
 	};

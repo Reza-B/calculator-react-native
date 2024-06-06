@@ -25,16 +25,18 @@ export default function HomeScreen() {
 			setEvaluated(false);
 		} else {
 			if (value === "=") {
-				try {
-					if (eval(display).toString() !== "Infinity") {
-						setDisplay(eval(display).toString());
-						setEvaluated(true);
-					} else {
-						setDisplay("Divide by zero");
-						setEvaluated(false);
+				if (display.length > 0) {
+					try {
+						if (eval(display).toString() !== "Infinity") {
+							setDisplay(eval(display).toString());
+							setEvaluated(true);
+						} else {
+							setDisplay("Divide by zero");
+							setEvaluated(false);
+						}
+					} catch {
+						setDisplay("Error");
 					}
-				} catch {
-					setDisplay("Error");
 				}
 			} else if (value === "C") {
 				setDisplay("");
@@ -43,8 +45,10 @@ export default function HomeScreen() {
 				setDisplay(display.slice(0, -1));
 				setEvaluated(false);
 			} else if (value === "%") {
-				setDisplay((eval(display) / 100).toString());
-				setEvaluated(false);
+				if (display.length > 0) {
+					setDisplay((eval(display) / 100).toString());
+					setEvaluated(false);
+				}
 			} else {
 				if (/^[1-9]$/.test(value)) {
 					if (evaluated) {
@@ -54,7 +58,9 @@ export default function HomeScreen() {
 						setDisplay(display + value);
 					}
 				} else {
-					setDisplay(display + value);
+					if (display.length > 0) {
+						setDisplay(display + value);
+					}
 				}
 			}
 		}
